@@ -14,7 +14,11 @@ client = genai.Client()
 async def processar_dados(audio: UploadFile = File(...), images: List[UploadFile] = File(None)):
     try:
         audio_bytes = await audio.read()
+        print(f"Tamanho do áudio recebido: {len(audio_bytes)} bytes")
         
+        if len(audio_bytes) < 100:
+            return {"error": "Áudio vazio recebido"}
+
         contents = [
             types.Part.from_bytes(
                 data=audio_bytes,
