@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import FileResponse
 from typing import List
 from google import genai
@@ -8,8 +8,9 @@ import os
 
 app = FastAPI()
 
-# Endpoint de rastreio para o Render saber que o serviço está online
+# Aceita tanto GET quanto HEAD para o health check do Render ficar feliz
 @app.get("/")
+@app.head("/")
 def read_root():
     return {"status": "Hórus está online e operacional, criadora!"}
 
@@ -22,7 +23,7 @@ async def processar_dados(audio: UploadFile = File(...), images: List[UploadFile
         print(f"Tamanho do áudio recebido: {len(audio_bytes)} bytes")
         
         if len(audio_bytes) < 100:
-            return {"error": "Áudio vazio recebido"}
+            raise HTTPException(status_code=400, detail="Áudio vazio recebido")
 
         contents = [
             types.Part.from_bytes(
