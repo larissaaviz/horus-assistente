@@ -26,7 +26,6 @@ async def processar_dados(audio: UploadFile = File(...), images: Optional[List[U
         if len(audio_bytes) < 100:
             raise HTTPException(status_code=400, detail="Áudio demasiado pequeno ou vazio.")
 
-        # Converte o PCM cru do AudioRecord para WAV em memória para o Gemini aceitar perfeitamente
         wav_buffer = io.BytesIO()
         with wave.open(wav_buffer, 'wb') as wav_file:
             wav_file.setnchannels(1)      # Mono
@@ -57,7 +56,7 @@ async def processar_dados(audio: UploadFile = File(...), images: Optional[List[U
         contents.append("Responde de forma concisa, direta e humanizada em português como o assistente Hórus, ajudando a tua criadora com base no que ouviste e viste.")
         
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-3.8-flash",
             contents=contents
         )
         
