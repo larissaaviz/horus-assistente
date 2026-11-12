@@ -18,7 +18,7 @@ async def processar_dados(audio: UploadFile = File(...), images: List[UploadFile
         contents = [
             types.Part.from_bytes(
                 data=audio_bytes,
-                mime_type="audio/3gp",
+                mime_type="audio/mp4",
             )
         ]
         
