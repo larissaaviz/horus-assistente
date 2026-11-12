@@ -35,10 +35,11 @@ async def processar_dados(audio: UploadFile = File(...), images: List[UploadFile
         
         contents.append("Responde de forma concisa, direta e humanizada em português como o assistente Hórus, ajudando a tua criadora com base no que ouviste.")
         
-       response = client.models.generate_content(
+        response = client.models.generate_content(
             model="gemini-3.8-flash",
             contents=contents
         )
+        
         texto_resposta = response.text
         
     except Exception as e:
@@ -46,7 +47,7 @@ async def processar_dados(audio: UploadFile = File(...), images: List[UploadFile
         print(f"Erro detalhado: {e}")
     
     output_audio_path = "resposta_horus.mp3"
-    voice = "pt-BR-AntonioNeural" # Voz humanizada em português
+    voice = "pt-BR-AntonioNeural"
     communicate = edge_tts.Communicate(texto_resposta, voice)
     await communicate.save(output_audio_path)
     
