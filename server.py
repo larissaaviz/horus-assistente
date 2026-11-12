@@ -8,6 +8,11 @@ import os
 
 app = FastAPI()
 
+# Endpoint de rastreio para o Render saber que o serviço está online
+@app.get("/")
+def read_root():
+    return {"status": "Hórus está online e operacional, criadora!"}
+
 client = genai.Client()
 
 @app.post("/process")
